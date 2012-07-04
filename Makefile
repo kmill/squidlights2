@@ -1,5 +1,5 @@
 CC=gcc
-LIBS=-lm -llo
+LIBS=-lm -llo -ljack -lfftw3
 CFLAGS=-Wall -I include -std=gnu99 -ggdb
 TARGETS=
 
@@ -12,11 +12,19 @@ testlight: src/lights/testlight.o src/lights.o
 osc: src/clients/osc.o src/lights.o
 	$(CC) $(LIBS) src/lights.o src/clients/osc.o -o build/clients/osc
 
+sqlights: src/clients/sqlights.o src/lights.o
+	$(CC) $(LIBS) src/lights.o src/clients/sqlights.o -o build/clients/sqlights
+
+kshow: src/clients/kshow/fft.o
+	$(CC) $(LIBS) src/lights.o src/clients/kshow/fft.o -o build/clients/kshow
+
 .o: $*.c
 	$(CC) $(LIBS) $(CFLAGS) $< -o $%
 
 clean:
 	rm build/*.o || true
+
+clients: osc kshow sqlights
 
 all: lights clients router # pd_client
 

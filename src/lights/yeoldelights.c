@@ -28,7 +28,7 @@ int connect_to_leitshow(char* device) {
   cfsetispeed(&options, B19200);
   cfsetspeed(&options, B19200);
   options.c_cflag |= CLOCAL;
-  options.c_cflag &= ~(CRTS_IFLOW | CCTS_OFLOW);
+  //  options.c_cflag &= ~(CRTS_IFLOW | CCTS_OFLOW);
   options.c_lflag &= ~ICANON;
   tcsetattr(leitshow_handle, TCSAFLUSH, &options);
   tcflush(leitshow_handle, TCIOFLUSH);
@@ -49,7 +49,9 @@ void send_leitshow_packet(char lightaddr, int brightness, unsigned char period) 
 
 /* brightness-able light controllers */
 void ba_yelight_brightness_handler(light_t* light, float brightness) {
-  send_leitshow_packet((char)(*(int*)(light->extra_data)), (int)(254*brightness), 0);
+  if(brightness < 0) brightness = 0;
+  if(brightness > 1) brightness = 1;
+  send_leitshow_packet((char)((int)(light->extra_data)), (int)(254*brightness), 0);
 }
 void ba_yelight_onoff_handler(light_t* light, char seton) {
   ba_yelight_brightness_handler(light, seton?1.0:0.0);
@@ -58,7 +60,7 @@ void ba_yelight_onoff_handler(light_t* light, char seton) {
 /* brightness-unable light controllers */
 /* "of" means "on/off" */
 void of_yelight_onoff_handler(light_t* light, char seton) {
-  send_leitshow_packet((char)(*(int*)(light->extra_data)), seton?254:0, 0);
+  send_leitshow_packet((char)((int)(light->extra_data)), seton?254:0, 0);
 }
 
 int load_lights(char * filename) {
@@ -102,7 +104,7 @@ int main(int argc, char** argv) {
     hostname = argv[1];
   }
 
-  if(connect_to_leitshow("/dev/tty.KeySerial1")) {
+  if(connect_to_leitshow("/dev/ttyS0")) {
     printf("serial error\n");
     exit(1);
   }

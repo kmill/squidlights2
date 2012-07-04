@@ -174,6 +174,10 @@ light_t * sqlights_add_light(char * name, sq_light_type capabilities) {
   sqlights_name_cpy(light->name, name);
   light->extra_data = NULL;
   light->acked = 0;
+  light->onoff_handler = &default_onoff_handler;
+  light->brightness_handler = &default_brightness_handler;
+  light->rgb_handler = &default_rgb_handler;
+  light->hsi_handler = &default_hsi_handler;
 
   // insert it into the list "lights"
   if(last_light_ptr == NULL) {
