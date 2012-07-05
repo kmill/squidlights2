@@ -32,14 +32,13 @@ char* insens_beat_lighters[] = {"hanging-terahertz",
 				"traffic-cone",
 				NULL};
 char* sens_beat_lighters[] = {"blue-front",
-			      "eit-sight",
+			      "eit-sign",
 			      NULL};
 char* supsens_beat_lighters[] = {"yellow-yield",
 				 NULL};
 char* sd_lighters[] = {"yellow-back",
 		       NULL};
-char* bass_lighters[] = {"neon",
-			 "traffic-light",
+char* bass_lighters[] = {"traffic-light",
 			 NULL};
 char* tenor_lighters[] = {"purple-mantle",
 			  "blue-neons",
